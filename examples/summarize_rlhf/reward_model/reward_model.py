@@ -16,7 +16,7 @@ class GPTRewardModel(nn.Module):
             if hasattr(self.config, "hidden_size")
             else self.config.n_embd
         )
-        self.transformer = self.model.gpt_neox if hasattr(self.model, "gpt_neox") else self.model.transformer
+        self.transformer = model.gpt_neox if hasattr(model, "gpt_neox") else model.transformer
         self.v_head = nn.Linear(self.config.n_embd, 1, bias=False)
         self.tokenizer = AutoTokenizer.from_pretrained(model_path)
         self.tokenizer.pad_token = self.tokenizer.eos_token
