@@ -1,5 +1,5 @@
 {
-  "train_batch_size": 32,
+  "train_batch_size": 4,
   "fp16": {
     "enabled": true,
     "min_loss_scale": 1,
@@ -20,7 +20,7 @@
   "optimizer": {
     "type": "AdamW",
     "params": {
-      "lr": 1e-5,
+      "lr": 9.76e-6,
       "betas": [
         0.9,
         0.999
