@@ -1,11 +1,87 @@
 import os
 
 import torch
+import torch.nn as nn
 from datasets import load_dataset
 from reward_model import GPTRewardModel
 from torch.utils.data import Dataset
 from tqdm import tqdm
+import functools
+import random
+
 from transformers import AutoTokenizer, Trainer, TrainingArguments
+
+def train_test_split(dataset, test_size=0.2, random_state=42):
+    """Split dataset into train and test set"""
+    random.seed(random_state)
+    random.shuffle(dataset)
+    train_size = int(len(dataset) * (1 - test_size))
+    train_set = dataset[:train_size]
+    test_set = dataset[train_size:]
+    return train_set, test_set
+
+
+def rhasattr(obj, attr):
+    """A chain-able attribute version of hasattr. For example, to check if
+    `obj` has the attribute `foo.bar.baz`, you can use:
+        `rhasattr(obj, "foo.bar.baz")`
+    Reference: https://stackoverflow.com/a/67303315
+    """
+    _nested_attrs = attr.split(".")
+    _curr_obj = obj
+    for _a in _nested_attrs[:-1]:
+        if hasattr(_curr_obj, _a):
+            _curr_obj = getattr(_curr_obj, _a)
+        else:
+            return False
+    return hasattr(_curr_obj, _nested_attrs[-1])
+
+
+def rgetattr(obj, attr: str, *args):
+    """A chain-able attribute version of getattr. For example, to get the
+    attribute `foo.bar.baz` from `obj`, you can use:
+        `rgetattr(obj, "foo.bar.baz")`
+    Reference: https://stackoverflow.com/a/31174427
+    """
+
+    def _getattr(obj, attr):
+        return getattr(obj, attr, *args)
+
+    return functools.reduce(_getattr, [obj] + attr.split("."))
+
+
+def findattr(obj, attrs):
+    for attr in attrs:
+        if rhasattr(obj, attr):
+            return rgetattr(obj, attr)
+
+def hf_get_causal_hidden_layers(model: nn.Module):
+    """Returns the hidden layers of the specified model.
+    NOTE: Different model configurations have different hidden layer attribute names.
+        - transformer.h: (BloomForCausalLM, GPT2LMHeadModel, GPTJForCausalLM)
+        - model.decoder.layers: (OPTForCausalLM)
+        - gpt_neox.layers: (GPTNeoXForCausalLM)
+    """
+    hidden_layers_attrs = (
+        "transformer.h",
+        "model.decoder.layers",
+        "gpt_neox.layers",
+    )
+    return findattr(model, hidden_layers_attrs)
+
+
+def freeze_bottom_causal_layers(model: nn.Module, num_layers_unfrozen):
+    """Freezes the bottom transformer block layers of the specified model."""
+    hidden_layers = hf_get_causal_hidden_layers(model)
+    num_layers_unfrozen = int(len(hidden_layers) * num_layers_unfrozen) if type(num_layers_unfrozen) is float else num_layers_unfrozen
+    if num_layers_unfrozen == 0:
+        hidden_layers_to_freeze = list(hidden_layers)
+    elif num_layers_unfrozen > 0:
+        hidden_layers_to_freeze = list(hidden_layers)[:-num_layers_unfrozen]
+    else:
+        hidden_layers_to_freeze = []
+    for layer in hidden_layers_to_freeze:
+        layer.requires_grad_(False)
 
 
 def create_comparison_dataset(
@@ -25,6 +101,8 @@ def create_comparison_dataset(
         pair["chosen"] = prompt + "\n" + chosen_summary
         pair["rejected"] = prompt + "\n" + rejected_summary
         pairs.append(pair)
+
+    
     return pairs
 
 
@@ -119,16 +197,13 @@ if __name__ == "__main__":
     model = GPTRewardModel("EleutherAI/pythia-1.3b-deduped")
 
     # Freeze the first 70% of the hidden layers of the reward model backbone
-    layers = model.transformer.h
-    num_layers = len(layers)
-    num_unfrozen = int(0.3 * num_layers)
-    for layer in layers[:-num_unfrozen]:
-        layer.requires_grad_(False)
-
+    freeze_bottom_causal_layers(model, 0.5)
     # Create the comparisons datasets
     data_path = "Dahoas/rm-synthetic-hhs"
     train_pairs = create_comparison_dataset(data_path, "train")
-    val_pairs = create_comparison_dataset(data_path, "test")
+    # val_pairs = create_comparison_dataset(data_path, "test")
+
+    train_pairs, val_pairs = train_test_split(train_pairs, test_size=0.06, random_state=42)
 
     # Make pairwise datasets for training
     max_length = 550
