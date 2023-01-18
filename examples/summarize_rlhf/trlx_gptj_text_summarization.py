@@ -28,10 +28,10 @@ if __name__ == "__main__":
     rw_tokenizer.pad_token = rw_tokenizer.eos_token
     rw_model = GPTRewardModel("EleutherAI/pythia-1.3b-deduped")
     rw_model.load_state_dict(torch.load(REWARD_CHECKPOINT_PATH))
-    # rw_model.half()
+    rw_model.half()
     rw_model.eval()
-    # rw_device = torch.device("cuda:{}".format(7))  # set reward model device
-    # rw_model.to(rw_device)
+    rw_device = torch.device("cuda:{}".format(1))  # set reward model device
+    rw_model.to(rw_device)
 
     def get_scores(samples: List[str]):
         scores_list = []
@@ -48,8 +48,8 @@ if __name__ == "__main__":
                 padding="max_length",
                 return_tensors="pt",
             )
-            input_ids = encodings_dict["input_ids"]#.to(rw_device)
-            attn_masks = encodings_dict["attention_mask"]#.to(rw_device)
+            input_ids = encodings_dict["input_ids"].to(rw_device)
+            attn_masks = encodings_dict["attention_mask"].to(rw_device)
             input_ids = input_ids.repeat(2, 1)
             attn_masks = attn_masks.repeat(2, 1)
             with torch.no_grad():
