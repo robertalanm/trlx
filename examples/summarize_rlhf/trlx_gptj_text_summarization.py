@@ -11,13 +11,13 @@ from transformers import AutoTokenizer
 import trlx
 from trlx.data.configs import TRLConfig
 
-REWARD_CHECKPOINT_PATH = "reward_model/rm_checkpoint/checkpoint-500/pytorch_model.bin"
-# if not os.path.exists(REWARD_CHECKPOINT_PATH):
-#     os.makedirs("reward_model/rm_checkpoint", exist_ok=True)
-#     os.system(
-#         f"wget -O {REWARD_CHECKPOINT_PATH} \
-#         https://huggingface.co/CarperAI/openai_summarize_tldr_rm_checkpoint/resolve/main/pytorch_model.bin"
-#     )
+REWARD_CHECKPOINT_PATH = "reward_model/rm_checkpoint/ckpt.pt"
+if not os.path.exists(REWARD_CHECKPOINT_PATH):
+    os.makedirs("reward_model/rm_checkpoint", exist_ok=True)
+    os.system(
+        f"wget -O {REWARD_CHECKPOINT_PATH} \
+        https://huggingface.co/robertmyers/rm-1.3b/resolve/main/ckpt.pt"
+    )
 SFT_MODEL_PATH = "robertmyers/bpt-sft"
 
 
