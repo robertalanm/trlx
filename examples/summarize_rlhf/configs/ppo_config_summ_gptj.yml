@@ -12,7 +12,7 @@ train:
   trainer: "AcceleratePPOTrainer"
 
 model:
-  model_path: "robertmyers/bpt-sft"
+  model_path: "Dahoas/pythia-synthetic-1B-static-sft"
   num_layers_unfrozen: 8
 
 tokenizer:
