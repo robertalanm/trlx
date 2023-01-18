@@ -117,7 +117,7 @@ if __name__ == "__main__":
     dataset = load_dataset("Dahoas/sft-synthetic-hh")
 
     # Store data into prompt and label pairs
-    train_set = [(sample["prompt"], sample["response"]) for sample in dataset["train"][0:1000]]
+    train_set = [(sample["prompt"], sample["response"]) for sample in dataset["train"][0:100]]
     # val_set = [(sample["prompt"], sample["label"]) for sample in dataset["valid"]]
 
     # Split into train and validation sets
