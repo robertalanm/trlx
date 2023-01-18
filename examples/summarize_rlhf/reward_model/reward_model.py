@@ -16,9 +16,11 @@ class GPTRewardModel(nn.Module):
             if hasattr(self.config, "hidden_size")
             else self.config.n_embd
         )
+
+        tokenizer_name = "EleutherAI/gpt-j-6B" if model_path == "robertmyers/bpt-sft" else model_path
         self.transformer = model.gpt_neox if hasattr(model, "gpt_neox") else model.transformer
         self.v_head = nn.Linear(self.config.n_embd, 1, bias=False)
-        self.tokenizer = AutoTokenizer.from_pretrained(model_path)
+        self.tokenizer = AutoTokenizer.from_pretrained(tokenizer_name)
         self.tokenizer.pad_token = self.tokenizer.eos_token
         self.PAD_ID = self.tokenizer(self.tokenizer.pad_token)["input_ids"][0]
 
