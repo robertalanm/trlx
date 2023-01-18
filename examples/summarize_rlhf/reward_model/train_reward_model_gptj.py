@@ -88,7 +88,7 @@ def compute_metrics(eval_preds):
 
 
 if __name__ == "__main__":
-    tokenizer = AutoTokenizer.from_pretrained("EleutherAI/gpt-j-6B")
+    tokenizer = AutoTokenizer.from_pretrained("EleutherAI/pythia-1.3b-deduped")
     tokenizer.pad_token = tokenizer.eos_token
 
     if not os.path.exists("rm_checkpoint"):
@@ -116,7 +116,7 @@ if __name__ == "__main__":
     )
 
     # Initialize the reward model from the (supervised) fine-tuned GPT-J
-    model = GPTRewardModel("CarperAI/openai_summarize_tldr_sft")
+    model = GPTRewardModel("EleutherAI/pythia-1.3b-deduped")
 
     # Freeze the first 70% of the hidden layers of the reward model backbone
     layers = model.transformer.h
@@ -126,7 +126,7 @@ if __name__ == "__main__":
         layer.requires_grad_(False)
 
     # Create the comparisons datasets
-    data_path = "CarperAI/openai_summarize_comparisons"
+    data_path = "Dahoas/rm-synthetic-hhs"
     train_pairs = create_comparison_dataset(data_path, "train")
     val_pairs = create_comparison_dataset(data_path, "test")
 
