@@ -12,12 +12,12 @@ import trlx
 from trlx.data.configs import TRLConfig
 
 REWARD_CHECKPOINT_PATH = "reward_model/rm_checkpoint/checkpoint-500/pytorch_model.bin"
-if not os.path.exists(REWARD_CHECKPOINT_PATH):
-    os.makedirs("reward_model/rm_checkpoint", exist_ok=True)
-    os.system(
-        f"wget -O {REWARD_CHECKPOINT_PATH} \
-        https://huggingface.co/CarperAI/openai_summarize_tldr_rm_checkpoint/resolve/main/pytorch_model.bin"
-    )
+# if not os.path.exists(REWARD_CHECKPOINT_PATH):
+#     os.makedirs("reward_model/rm_checkpoint", exist_ok=True)
+#     os.system(
+#         f"wget -O {REWARD_CHECKPOINT_PATH} \
+#         https://huggingface.co/CarperAI/openai_summarize_tldr_rm_checkpoint/resolve/main/pytorch_model.bin"
+#     )
 SFT_MODEL_PATH = "robertmyers/bpt-sft"
 
 
@@ -30,7 +30,7 @@ if __name__ == "__main__":
     rw_model.load_state_dict(torch.load(REWARD_CHECKPOINT_PATH))
     rw_model.half()
     rw_model.eval()
-    rw_device = torch.device("cuda:{}".format(1))  # set reward model device
+    rw_device = torch.device("cuda")  # set reward model device
     rw_model.to(rw_device)
 
     def get_scores(samples: List[str]):
