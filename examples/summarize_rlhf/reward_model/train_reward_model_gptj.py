@@ -197,7 +197,14 @@ if __name__ == "__main__":
     model = GPTRewardModel("EleutherAI/pythia-1.3b-deduped")
 
     # Freeze the first 70% of the hidden layers of the reward model backbone
-    freeze_bottom_causal_layers(model, 0.5)
+    # freeze_bottom_causal_layers(model, 0.5
+    import code; code.interact(local=dict(globals(), **locals())
+    layers = model.transformer.h
+    num_layers = len(layers)
+    num_unfrozen = int(0.3 * num_layers)
+    for layer in layers[:-num_unfrozen]:
+        layer.requires_grad_(False)
+
     # Create the comparisons datasets
     data_path = "Dahoas/synthetic-instruct-gptj-pairwise"
     train_pairs = create_comparison_dataset(data_path, "train")
