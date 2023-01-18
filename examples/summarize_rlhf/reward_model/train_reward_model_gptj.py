@@ -198,7 +198,7 @@ if __name__ == "__main__":
 
     # Freeze the first 70% of the hidden layers of the reward model backbone
     # freeze_bottom_causal_layers(model, 0.5
-    import code; code.interact(local=dict(globals(), **locals()))
+    # import code; code.interact(local=dict(globals(), **locals()))
 
     layers = model.transformer.layers
     num_layers = len(layers)
