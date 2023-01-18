@@ -117,11 +117,12 @@ if __name__ == "__main__":
     dataset = load_dataset("Dahoas/sft-synthetic-hh")
 
     # use only the first 100 samples
-    dataset = dataset["train"][:100]
+    dataset["train"] = dataset["train"][:100]
+    
 
     # Store data into prompt and label pairs
-    # train_set = [(sample["prompt"], sample["response"]) for sample in dataset["train"]]
-    train_set = [(sample["prompt"], sample["response"]) for sample in dataset]
+    train_set = [(sample["prompt"], sample["response"]) for sample in dataset["train"]]
+    # train_set = [(sample["prompt"], sample["response"]) for sample in dataset]
     # Split into train and validation sets
     train_set, val_set = train_test_split(train_set, test_size=0.1, random_state=42)
 
