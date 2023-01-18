@@ -42,6 +42,12 @@ class GPTRewardModel(nn.Module):
             input_ids,
             past_key_values=past_key_values,
             attention_mask=attention_mask,
+            head_mask=head_mask,
+            inputs_embeds=inputs_embeds,
+        ) if self.neox else self.transformer(
+            input_ids,
+            past_key_values=past_key_values,
+            attention_mask=attention_mask,
             token_type_ids=token_type_ids,
             position_ids=position_ids,
             head_mask=head_mask,
