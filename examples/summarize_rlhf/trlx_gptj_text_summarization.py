@@ -18,13 +18,13 @@ if not os.path.exists(REWARD_CHECKPOINT_PATH):
         f"wget -O {REWARD_CHECKPOINT_PATH} \
         https://huggingface.co/CarperAI/openai_summarize_tldr_rm_checkpoint/resolve/main/pytorch_model.bin"
     )
-SFT_MODEL_PATH = "CarperAI/openai_summarize_tldr_sft"
+SFT_MODEL_PATH = "robertmyers/bpt-sft"
 
 
 if __name__ == "__main__":
 
     # Load the pre-trained reward model
-    rw_tokenizer = AutoTokenizer.from_pretrained("EleutherAI/gpt-j-6B")
+    rw_tokenizer = AutoTokenizer.from_pretrained("EleutherAI/pythia-1.3b-deduped")
     rw_tokenizer.pad_token = rw_tokenizer.eos_token
     rw_model = GPTRewardModel(SFT_MODEL_PATH)
     rw_model.load_state_dict(torch.load(REWARD_CHECKPOINT_PATH))
@@ -67,14 +67,14 @@ if __name__ == "__main__":
         for i in tqdm(range(len(prompts))):
             tmp = tokenizer.decode(
                 tokenizer(
-                    prompts[i].split("TL;DR:")[0],
+                    prompts[i].split("Assistant:")[0],
                     truncation=True,
                     max_length=max_length
                     - 5,  # to make sure "TL;DR" dont get truncated
                 )["input_ids"],
                 skip_special_tokens=True,
             ).strip()
-            tmp = tmp + "\nTL;DR:"
+            tmp = tmp + "\nAssistant:"
             tmp = tokenizer.decode(
                 tokenizer(tmp, truncation=True, max_length=max_length)["input_ids"],
                 skip_special_tokens=True,
@@ -83,7 +83,7 @@ if __name__ == "__main__":
         return formatted_prompts
 
     def reward_fn(samples: List[str], **kwargs):
-        original_samples = [text.split("TL;DR:")[0] + "TL;DR: " for text in samples]
+        original_samples = [text.split("Assistant:")[0] + "Assistant: " for text in samples]
         original_samples = [
             text + post_summary_dict[text.strip()] for text in original_samples
         ]
@@ -91,6 +91,14 @@ if __name__ == "__main__":
         scores = get_scores(samples)
         norms_scores = scores - original_scores
         return norms_scores
+
+    def train_test_split(data, test_size=0.1, random_state=42):
+        import numpy as np
+
+        np.random.seed(random_state)
+        np.random.shuffle(data)
+        split_index = int(len(data) * (1 - test_size))
+        return data[:split_index], data[split_index:]
 
     config_path = pathlib.Path(__file__).parent.joinpath(
         "configs/ppo_config_summ_gptj.yml"
@@ -104,11 +112,14 @@ if __name__ == "__main__":
         config.train.seq_length - config.method.gen_kwargs["max_new_tokens"]
     )
 
-    dataset = load_dataset("CarperAI/openai_summarize_tldr")
+    dataset = load_dataset("Dahoas/full-synthetic-hh")
 
     # Store data into prompt and label pairs
     train_set = [(sample["prompt"], sample["label"]) for sample in dataset["train"]]
-    val_set = [(sample["prompt"], sample["label"]) for sample in dataset["valid"]]
+    # val_set = [(sample["prompt"], sample["label"]) for sample in dataset["valid"]]
+
+    # Split into train and validation sets
+    train_set, val_set = train_test_split(train_set, test_size=0.1, random_state=42)
 
     # Split contents into summaries and labels
     train_posts, train_summaries = zip(*train_set)
