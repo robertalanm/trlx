@@ -8,15 +8,17 @@ class GPTRewardModel(nn.Module):
         super().__init__()
         model = AutoModelForCausalLM.from_pretrained(model_path)
         self.config = model.config
+        self.neox = "neox" in self.config.model_type
+
         # `gpt-neo(x)` models use `hidden_size` attribute names instead of `n_embd``
         self.config.n_embd = (
             self.config.hidden_size
             if hasattr(self.config, "hidden_size")
             else self.config.n_embd
         )
-        self.transformer = model.transformer
+        self.transformer = self.model.gpt_neox if hasattr(self.model, "gpt_neox") else self.model.transformer
         self.v_head = nn.Linear(self.config.n_embd, 1, bias=False)
-        self.tokenizer = AutoTokenizer.from_pretrained("EleutherAI/gpt-j-6B")
+        self.tokenizer = AutoTokenizer.from_pretrained(model_path)
         self.tokenizer.pad_token = self.tokenizer.eos_token
         self.PAD_ID = self.tokenizer(self.tokenizer.pad_token)["input_ids"][0]
 
