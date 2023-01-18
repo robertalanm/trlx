@@ -112,7 +112,7 @@ if __name__ == "__main__":
         config.train.seq_length - config.method.gen_kwargs["max_new_tokens"]
     )
 
-    dataset = load_dataset("Dahoas/full-synthetic-hh")
+    dataset = load_dataset("Dahoas/pythia_synthetic_1B_inference_train")
 
     # Store data into prompt and label pairs
     train_set = [(sample["prompt"], sample["response"]) for sample in dataset["train"]]
