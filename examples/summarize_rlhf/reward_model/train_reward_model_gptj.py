@@ -179,7 +179,7 @@ if __name__ == "__main__":
         gradient_accumulation_steps=4,
         save_strategy="steps",
         evaluation_strategy="steps",
-        per_device_train_batch_size=16,
+        per_device_train_batch_size=8,
         per_device_eval_batch_size=1,
         eval_accumulation_steps=1,
         eval_steps=500,
