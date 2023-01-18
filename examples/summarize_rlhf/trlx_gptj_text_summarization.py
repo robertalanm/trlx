@@ -91,6 +91,7 @@ if __name__ == "__main__":
         original_scores = get_scores(original_samples)
         scores = get_scores(samples)
         norms_scores = scores - original_scores
+        print('norms_scores', norms_scores)
         return norms_scores
 
     def train_test_split(data, test_size=0.1, random_state=42):
@@ -113,7 +114,7 @@ if __name__ == "__main__":
         config.train.seq_length - config.method.gen_kwargs["max_new_tokens"]
     )
 
-    dataset = load_dataset("Dahoas/pythia_synthetic_1B_inference_train")
+    dataset = load_dataset("Dahoas/sft-synthetic-hh")
 
     # Store data into prompt and label pairs
     train_set = [(sample["prompt"], sample["response"]) for sample in dataset["train"]]
