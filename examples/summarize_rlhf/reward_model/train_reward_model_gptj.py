@@ -65,7 +65,7 @@ def hf_get_causal_hidden_layers(model: nn.Module):
     hidden_layers_attrs = (
         "transformer.h",
         "model.decoder.layers",
-        "gpt_neox.layers",
+        "model.gpt_neox.layers",
     )
     return findattr(model, hidden_layers_attrs)
 
@@ -188,7 +188,7 @@ if __name__ == "__main__":
         logging_dir="./logs",
         fp16=True,
         bf16=False,
-        learning_rate=1e-5,
+        learning_rate=9.76e-6,
         deepspeed="ds_config_gpt_j.json",
         save_total_limit=1,
     )
@@ -199,7 +199,7 @@ if __name__ == "__main__":
     # Freeze the first 70% of the hidden layers of the reward model backbone
     freeze_bottom_causal_layers(model, 0.5)
     # Create the comparisons datasets
-    data_path = "Dahoas/rm-synthetic-hhs"
+    data_path = "Dahoas/synthetic-instruct-gptj-pairwise"
     train_pairs = create_comparison_dataset(data_path, "train")
     # val_pairs = create_comparison_dataset(data_path, "test")
 
