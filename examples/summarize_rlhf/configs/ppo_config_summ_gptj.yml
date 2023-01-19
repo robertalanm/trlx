@@ -4,7 +4,7 @@ train:
   total_steps: 256000
   batch_size: 16
 
-  checkpoint_interval: 100
+  checkpoint_interval: 1000
   eval_interval: 1000
 
   pipeline: "PromptPipeline"
@@ -22,7 +22,7 @@ tokenizer:
 optimizer:
   name: "adamw"
   kwargs:
-    lr: 5.0e-6
+    lr: 9.0e-6
     betas: [0.9, 0.999]
     eps: 1.0e-8
     weight_decay: 0.01
@@ -37,7 +37,7 @@ method:
   name: "ppoconfig"
   num_rollouts: 128
   chunk_size: 16
-  ppo_epochs: 1
+  ppo_epochs: 10
   init_kl_coef: 0.1
   target: 6
   horizon: 10000
@@ -51,4 +51,4 @@ method:
   ref_std: null
   cliprange_reward: 10
   gen_kwargs:
-    max_new_tokens: 50
+    max_new_tokens: 512
