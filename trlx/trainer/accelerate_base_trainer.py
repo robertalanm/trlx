@@ -473,7 +473,7 @@ class AccelerateRLTrainer(BaseRLTrainer):
                         # FIXME: seems to not work with zero and barriers don't seem to help
                         if (
                             self.config.train.save_best
-                            and int(os.environ.get("DEEPSPEED_ZERO_STAGE", -1)) == -1
+                            # and int(os.environ.get("DEEPSPEED_ZERO_STAGE", -1)) == -1
                         ):
                             if (
                                 "reward/mean" in stats
