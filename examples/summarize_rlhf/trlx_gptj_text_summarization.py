@@ -125,7 +125,7 @@ if __name__ == "__main__":
     # train_set = [(sample["prompt"], sample["response"]) for sample in dataset]
     # Split into train and validation sets
     train_set, val_set = train_test_split(train_set, test_size=0.1, random_state=42)
-    train_set = train_set[:100]
+    # train_set = train_set[:100]
     # Split contents into summaries and labels
     train_posts, train_summaries = zip(*train_set)
     val_posts, val_summaries = zip(*val_set)
