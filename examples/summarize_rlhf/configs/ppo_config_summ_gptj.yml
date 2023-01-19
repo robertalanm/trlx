@@ -5,7 +5,7 @@ train:
   batch_size: 8
 
   checkpoint_interval: 100
-  eval_interval: 100
+  eval_interval: 1000
 
   pipeline: "PromptPipeline"
   orchestrator: "PPOOrchestrator"
