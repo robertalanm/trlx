@@ -36,7 +36,7 @@ if __name__ == "__main__":
     def get_scores(samples: List[str]):
         scores_list = []
         batch_size = 2
-        print('getting scores!')
+        # print('getting scores!')
         for i in range(0, len(samples), batch_size):
             sub_samples = samples[i : i + batch_size]
             sub_samples = [
@@ -91,7 +91,7 @@ if __name__ == "__main__":
         original_scores = get_scores(original_samples)
         scores = get_scores(samples)
         norms_scores = scores - original_scores
-        print('norms_scores', norms_scores)
+        # print('norms_scores', norms_scores)
         return norms_scores
 
     def train_test_split(data, test_size=0.1, random_state=42):
