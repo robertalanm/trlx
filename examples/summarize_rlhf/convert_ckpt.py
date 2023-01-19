@@ -7,7 +7,7 @@ def convert_deepspeed_checkpoint(model_path, model_name, model_ckpt):
     type_t = "causal"
 
     model = AutoModel.from_pretrained(model_name)
-    fp32_model = load_state_dict_from_zero_checkpoint(model, os.path.join(model_path, model_ckpt))
+    fp32_model = load_state_dict_from_zero_checkpoint(model, os.path.join(model_path))
     import code; code.interact(local=dict(globals(), **locals()))
     # if type_t == "causal":
     #     torch.save(model.state_dict(), os.path.join(model_path, "hf_ckpt/hf_ckpt.pt"))
