@@ -145,7 +145,7 @@ if __name__ == "__main__":
         prompts=train_prompts,
         stop_sequences=["Human:", "human:", "Assistant:", "assistant:"],
         eval_prompts=val_prompts[
-            0:10
+            0:3
         ],  # sampling 1000 validation prompts for evaluation speed in training
         config=config,
     )
