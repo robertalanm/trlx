@@ -1,11 +1,11 @@
 train:
   seq_length: 1024
   epochs: 50
-  total_steps: 256000
+  total_steps: 800
   batch_size: 8
 
-  checkpoint_interval: 20000
-  eval_interval: 20000
+  checkpoint_interval: 800
+  eval_interval: 800
 
   pipeline: "PromptPipeline"
   orchestrator: "PPOOrchestrator"
@@ -22,7 +22,7 @@ tokenizer:
 optimizer:
   name: "adamw"
   kwargs:
-    lr: 9.0e-6
+    lr: 1.04e-5
     betas: [0.9, 0.999]
     eps: 1.0e-8
     weight_decay: 0.01

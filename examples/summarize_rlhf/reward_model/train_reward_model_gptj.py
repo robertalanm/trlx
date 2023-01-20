@@ -194,7 +194,7 @@ if __name__ == "__main__":
     )
 
     # Initialize the reward model from the (supervised) fine-tuned GPT-J
-    model = GPTRewardModel("EleutherAI/pythia-1.3b-deduped")
+    model = GPTRewardModel("EleutherAI/pythia-6.7b-deduped")
 
     # Freeze the first 70% of the hidden layers of the reward model backbone
     # freeze_bottom_causal_layers(model, 0.5
