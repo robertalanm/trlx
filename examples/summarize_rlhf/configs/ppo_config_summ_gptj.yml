@@ -1,11 +1,11 @@
 train:
   seq_length: 1024
   epochs: 50
-  total_steps: 800
-  batch_size: 16
+  total_steps: 256000
+  batch_size: 32
 
   checkpoint_interval: 32000
-  eval_interval: 800
+  eval_interval: 1000
 
   pipeline: "PromptPipeline"
   orchestrator: "PPOOrchestrator"
@@ -51,4 +51,4 @@ method:
   ref_std: null
   cliprange_reward: 10
   gen_kwargs:
-    max_new_tokens: 220
+    max_new_tokens: 60
