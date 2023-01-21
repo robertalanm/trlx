@@ -1,11 +1,11 @@
 train:
   seq_length: 1024
-  epochs: 50
+  epochs: 1
   total_steps: 256000
   batch_size: 32
 
   checkpoint_interval: 32000
-  eval_interval: 200
+  eval_interval: 20
 
   pipeline: "PromptPipeline"
   orchestrator: "PPOOrchestrator"
