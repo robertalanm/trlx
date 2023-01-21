@@ -71,7 +71,7 @@ if __name__ == "__main__":
                     prompts[i].split("Assistant:")[0],
                     truncation=True,
                     max_length=max_length
-                    - 5,  # to make sure "TL;DR" dont get truncated
+                    - 11,  # to make sure "TL;DR" dont get truncated
                 )["input_ids"],
                 skip_special_tokens=True,
             ).strip()
@@ -125,11 +125,18 @@ if __name__ == "__main__":
     # train_set = [(sample["prompt"], sample["response"]) for sample in dataset]
     # Split into train and validation sets
     train_set, val_set = train_test_split(train_set, test_size=0.1, random_state=42)
+
+    # shuffle val set, train set
+    import random
+    random.shuffle(train_set)
+    random.shuffle(val_set)
+
     # train_set = train_set[:100]
     # Split contents into summaries and labels
     train_posts, train_summaries = zip(*train_set)
     val_posts, val_summaries = zip(*val_set)
 
+    # shuffle val set, train set
     # Get the OpenAI summaries
     post_summary_dict = {}
     train_prompts = get_prompt_dataset(train_posts, max_length_input)
@@ -138,14 +145,15 @@ if __name__ == "__main__":
     val_prompts = get_prompt_dataset(val_posts, max_length_input)
     for i in range(len(val_prompts)):
         post_summary_dict[val_prompts[i]] = val_summaries[i]
+    
 
     trainer = trlx.train(
         config.model.model_path,
         reward_fn=reward_fn,
         prompts=train_prompts,
-        stop_sequences=["Human:", "human:", "Assistant:", "assistant:"],
+        # stop_sequences=["Human:", "human:", "Assistant:", "assistant:"],
         eval_prompts=val_prompts[
-            0:3
+            0:10
         ],  # sampling 1000 validation prompts for evaluation speed in training
         config=config,
     )
