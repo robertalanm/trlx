@@ -2,7 +2,7 @@ train:
   seq_length: 1024
   epochs: 30
   total_steps: 256000
-  batch_size: 32
+  batch_size: 16
 
   checkpoint_interval: 32000
   eval_interval: 100
@@ -38,7 +38,7 @@ method:
   name: "ppoconfig"
   num_rollouts: 128
   chunk_size: 16
-  ppo_epochs: 1
+  ppo_epochs: 6
   init_kl_coef: 0.1
   target: 6
   horizon: 10000
@@ -52,4 +52,4 @@ method:
   ref_std: null
   cliprange_reward: 10
   gen_kwargs:
-    max_new_tokens: 120
+    max_new_tokens: 175
