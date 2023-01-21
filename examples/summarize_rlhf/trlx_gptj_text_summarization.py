@@ -118,6 +118,15 @@ if __name__ == "__main__":
     dataset = load_dataset("Dahoas/rm-synthetic-hh")
 
 
+    
+    # I want to remove the 1 from all sames of the train_set
+    # using re.sub(r'1\s', '', sample) to remove the 1 from the train_set
+    # and store the new train_set into train_set_new
+    # use this regex pattern
+    pattern = "(?<=[?.!])\s*1(?=[^\.\)])"
+
+    for sample in dataset["train"]:
+        sample['prompt'] = re.sub(pattern, '', sample['prompt'])
 
 
     # Store data into prompt and label pairs
@@ -127,13 +136,7 @@ if __name__ == "__main__":
     # Human: Is Overthinking bad for physical and mental health?
     #    1    
     # Assistant:
-    
-    # I want to remove the 1 from all sames of the train_set
-    # using re.sub(r'1\s', '', sample) to remove the 1 from the train_set
-    # and store the new train_set into train_set_new
-    # use this regex pattern
-    pattern = "(?<=[?.!])\s*1(?=[^\.\)])"
-    train_set = [re.sub(pattern, '', sample) for sample in train_set]
+
 
 
     # train_set = [(sample["prompt"], sample["response"]) for sample in dataset]
