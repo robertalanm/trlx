@@ -41,7 +41,6 @@ method:
   ppo_epochs: 4
   init_kl_coef: 0.1
   target: 6
-  lr_init: 5.0e-6
   horizon: 10000
   gamma: 1
   lam: 0.95
