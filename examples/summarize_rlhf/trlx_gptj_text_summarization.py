@@ -35,7 +35,7 @@ if __name__ == "__main__":
 
     def get_scores(samples: List[str]):
         scores_list = []
-        batch_size = 8
+        batch_size = 1
         # print('getting scores!')
         for i in range(0, len(samples), batch_size):
             sub_samples = samples[i : i + batch_size]
