@@ -8,6 +8,7 @@ from reward_model.reward_model import GPTRewardModel
 from tqdm import tqdm
 from transformers import AutoTokenizer
 
+import re
 import trlx
 from trlx.data.configs import TRLConfig
 
@@ -121,7 +122,20 @@ if __name__ == "__main__":
 
     # Store data into prompt and label pairs
     train_set = [(sample["prompt"], sample["response"]) for sample in dataset['train']]
+
+    # here is an sample of train_set
+    # Human: Is Overthinking bad for physical and mental health?
+    #    1    
+    # Assistant:
     
+    # I want to remove the 1 from all sames of the train_set
+    # using re.sub(r'1\s', '', sample) to remove the 1 from the train_set
+    # and store the new train_set into train_set_new
+    # use this regex pattern
+    pattern = "(?<=[?.!])\s*1(?=[^\.\)])"
+    train_set = [re.sub(pattern, '', sample) for sample in train_set]
+
+
     # train_set = [(sample["prompt"], sample["response"]) for sample in dataset]
     # Split into train and validation sets
     train_set, val_set = train_test_split(train_set, test_size=0.1, random_state=42)
