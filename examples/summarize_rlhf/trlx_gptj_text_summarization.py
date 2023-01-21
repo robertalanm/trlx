@@ -157,3 +157,5 @@ if __name__ == "__main__":
         ],  # sampling 1000 validation prompts for evaluation speed in training
         config=config,
     )
+
+    trainer.save_pretrained("bpt-ppo")

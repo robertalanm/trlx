@@ -5,7 +5,7 @@ train:
   batch_size: 16
 
   checkpoint_interval: 32000
-  eval_interval: 20
+  eval_interval: 100
 
   pipeline: "PromptPipeline"
   orchestrator: "PPOOrchestrator"
@@ -52,4 +52,4 @@ method:
   ref_std: null
   cliprange_reward: 10
   gen_kwargs:
-    max_new_tokens: 60
+    max_new_tokens: 120
