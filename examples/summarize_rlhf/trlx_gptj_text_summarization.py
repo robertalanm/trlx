@@ -66,7 +66,7 @@ if __name__ == "__main__":
         # remove the input_ids and attention_mask from the gpu
         del input_ids
         del attn_masks
-        
+
         return scores
 
     def get_prompt_dataset(prompts, max_length):
@@ -124,18 +124,8 @@ if __name__ == "__main__":
         config.train.seq_length - config.method.gen_kwargs["max_new_tokens"]
     )
 
-    dataset = load_dataset("Dahoas/rm-synthetic-hh")
+    dataset = load_dataset("Dahoas/sft-single-context")
 
-
-    
-    # I want to remove the 1 from all sames of the train_set
-    # using re.sub(r'1\s', '', sample) to remove the 1 from the train_set
-    # and store the new train_set into train_set_new
-    # use this regex pattern
-    # pattern = "(?<=[?.!])\s*1(?=[^\.\)])"
-
-    # for sample in dataset["train"]:
-    #     sample['prompt'] = re.sub(pattern, '', sample['prompt'])
 
 
     # Store data into prompt and label pairs
