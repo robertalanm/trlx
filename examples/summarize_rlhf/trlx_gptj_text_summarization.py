@@ -124,7 +124,7 @@ if __name__ == "__main__":
         config.train.seq_length - config.method.gen_kwargs["max_new_tokens"]
     )
 
-    dataset = load_dataset("Dahoas/sft-single-context")
+    dataset = load_dataset("Dahoas/rm-synthetic-hh")
 
 
 
