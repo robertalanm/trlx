@@ -63,6 +63,10 @@ if __name__ == "__main__":
                 sub_scores = rw_model(input_ids=input_ids, attention_mask=attn_masks)
             scores_list.append(sub_scores["chosen_end_scores"])
         scores = torch.cat(scores_list, dim=0)
+        # remove the input_ids and attention_mask from the gpu
+        del input_ids
+        del attn_masks
+        
         return scores
 
     def get_prompt_dataset(prompts, max_length):
