@@ -94,15 +94,26 @@ if __name__ == "__main__":
         return formatted_prompts
 
     def reward_fn(samples: List[str], **kwargs):
-        original_samples = [text.split("Assistant:")[0] + "Assistant: " for text in samples]
-        original_samples = [
-            text + post_summary_dict[text.strip()] for text in original_samples
-        ]
-        original_scores = get_scores(original_samples)
-        scores = get_scores(samples)
-        norms_scores = scores - original_scores
-        # print('norms_scores', norms_scores)
-        return norms_scores
+        try:
+            original_samples = [text.split("Assistant:")[0] + "Assistant: " for text in samples]
+            original_samples = [
+                text + post_summary_dict[text.strip()] for text in original_samples
+            ]
+            original_scores = get_scores(original_samples)
+            scores = get_scores(samples)
+            norms_scores = scores - original_scores
+            # print('norms_scores', norms_scores)
+            return norms_scores
+        except Exception as e:
+            print(e)
+            return torch.zeros(len(samples))
+
+    # recommend a error handler for the reward function
+    def reward_fn_error_handler(e):
+        print(e)
+        return torch.zeros(1)
+
+    
 
     def train_test_split(data, test_size=0.1, random_state=42):
         import numpy as np
@@ -125,8 +136,6 @@ if __name__ == "__main__":
     )
 
     dataset = load_dataset("Dahoas/rm-synthetic-hh")
-
-
 
     # Store data into prompt and label pairs
     train_set = [(sample["prompt"], sample["response"]) for sample in dataset['train']]
