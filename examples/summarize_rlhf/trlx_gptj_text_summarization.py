@@ -123,20 +123,14 @@ if __name__ == "__main__":
     # using re.sub(r'1\s', '', sample) to remove the 1 from the train_set
     # and store the new train_set into train_set_new
     # use this regex pattern
-    pattern = "(?<=[?.!])\s*1(?=[^\.\)])"
+    # pattern = "(?<=[?.!])\s*1(?=[^\.\)])"
 
-    for sample in dataset["train"]:
-        sample['prompt'] = re.sub(pattern, '', sample['prompt'])
+    # for sample in dataset["train"]:
+    #     sample['prompt'] = re.sub(pattern, '', sample['prompt'])
 
 
     # Store data into prompt and label pairs
     train_set = [(sample["prompt"], sample["response"]) for sample in dataset['train']]
-
-    # here is an sample of train_set
-    # Human: Is Overthinking bad for physical and mental health?
-    #    1    
-    # Assistant:
-
 
 
     # train_set = [(sample["prompt"], sample["response"]) for sample in dataset]

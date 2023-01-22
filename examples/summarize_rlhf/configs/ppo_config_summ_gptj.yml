@@ -38,7 +38,7 @@ method:
   name: "ppoconfig"
   num_rollouts: 128
   chunk_size: 16
-  ppo_epochs: 2
+  ppo_epochs: 1
   init_kl_coef: 0.1
   target: 6
   horizon: 10000
