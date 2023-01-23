@@ -47,9 +47,12 @@ def main(hparams={}):
     train_set = [sample["response"] for sample in data["train"]]
     reward_set = [sample["reward"] for sample in data["train"]]
 
-    # import code; code.interact(local=dict(globals(), **locals()))
-
-    train_set, val_set = train_test_split(train_set, test_size=0.1, random_state=42)
+    # last 10 examples are used for validation
+    val_set = train_set[-40:]
+    
+    # remove the last 10 examples from the training set
+    train_set = train_set[:-40]
+    reward_set = reward_set[:-40]
 
     dataset = (train_set, reward_set)
 
@@ -60,7 +63,7 @@ def main(hparams={}):
 
     trlx.train(
         dataset=dataset,
-        eval_prompts=val_set[
+        eval_prompts=train_set[
             0:10
         ],  # sampling 1000 validation prompts for evaluation speed in training
         config=config,
