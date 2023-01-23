@@ -42,13 +42,16 @@ def main(hparams={}):
         device = -1
 
 
-    dataset = load_dataset("Dahoas/reward-labeled-static")
+    data = load_dataset("Dahoas/reward-labeled-static")
 
-    train_set = [(sample["response"], sample['reward']) for sample in dataset["train"]]
+    train_set = [sample["response"] for sample in data["train"]]
+    reward_set = [sample["reward"] for sample in data["train"]]
 
-    import code; code.interact(local=dict(globals(), **locals()))
+    # import code; code.interact(local=dict(globals(), **locals()))
 
     train_set, val_set = train_test_split(train_set, test_size=0.1, random_state=42)
+
+    dataset = (train_set, reward_set)
 
     # shuffle val set, train set
     import random
@@ -56,7 +59,7 @@ def main(hparams={}):
     random.shuffle(val_set)
 
     trlx.train(
-        dataset=train_set,
+        dataset=dataset,
         eval_prompts=val_set[
             0:10
         ],  # sampling 1000 validation prompts for evaluation speed in training
