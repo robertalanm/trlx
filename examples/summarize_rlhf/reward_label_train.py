@@ -42,7 +42,7 @@ def main(hparams={}):
         device = -1
 
 
-    def reward_fn(samples: List[str]):
+    def reward_fn(samples: List[str], **kwargs):
         "Reward function for sentiment analysis"
         
         scores_list = []
@@ -79,7 +79,7 @@ def main(hparams={}):
 
     trlx.train(
         config.model.model_path,
-        prompts = train_set,
+        prompts=train_set,
         reward_fn = reward_fn,
         eval_prompts=val_set,  # sampling 1000 validation prompts for evaluation speed in training
         config=config,
