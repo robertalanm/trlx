@@ -44,7 +44,7 @@ def main(hparams={}):
 
     dataset = load_dataset("Dahoas/reward-labeled-static")
 
-    train_set = [[sample["response"], sample['reward']] for sample in dataset["train"]]
+    train_set = [(sample["response"], sample['reward']) for sample in dataset["train"]]
 
 
     train_set, val_set = train_test_split(train_set, test_size=0.1, random_state=42)
