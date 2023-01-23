@@ -75,7 +75,7 @@ def main(hparams={}):
     for i in range(len(val_set)):
         reward_dict[val_set[i]] = val_reward_set[i]
     
-
+    import code; code.interact(local=dict(globals(), **locals()))
 
     trlx.train(
         config.model.model_path,
