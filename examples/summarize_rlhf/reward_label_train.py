@@ -46,26 +46,16 @@ def main(hparams={}):
 
     train_set = [sample["response"] for sample in data["train"]]
     reward_set = [sample["reward"] for sample in data["train"]]
-
-    # last 10 examples are used for validation
-    val_set = train_set[-40:]
     
-    # remove the last 10 examples from the training set
-    train_set = train_set[:-40]
-    reward_set = reward_set[:-40]
-
     dataset = (train_set, reward_set)
 
     # shuffle val set, train set
     import random
     random.shuffle(train_set)
-    random.shuffle(val_set)
 
     trlx.train(
+        config.model.model_path,
         dataset=dataset,
-        eval_prompts=train_set[
-            0:10
-        ],  # sampling 1000 validation prompts for evaluation speed in training
         config=config,
     )
 
