@@ -118,7 +118,7 @@ def train(
         )
 
         pipeline = get_pipeline(config.train.pipeline)(
-            prompts, max_prompt_length, trainer.tokenizer
+            samples, max_prompt_length, trainer.tokenizer
         )
         orch = get_orchestrator(config.train.orchestrator)(trainer)
         orch.make_experience(samples, rewards, config.train.seq_length)
