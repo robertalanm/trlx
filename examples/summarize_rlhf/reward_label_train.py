@@ -42,20 +42,46 @@ def main(hparams={}):
         device = -1
 
 
+    def reward_fn(samples: List[str]):
+        "Reward function for sentiment analysis"
+        
+        scores_list = []
+        batch_size = 1
+        for sample in samples:
+            scores_list.append(reward_dict[sample])
+
+        scores = torch.cat(scores_list, dim=0)
+        return scores
+
+
     data = load_dataset("Dahoas/reward-labeled-static")
 
     train_set = [sample["response"] for sample in data["train"]]
     reward_set = [sample["reward"] for sample in data["train"]]
-    
-    dataset = (train_set, reward_set)
 
-    # shuffle val set, train set
-    import random
-    random.shuffle(train_set)
+    # val_set is last 10 samples of train
+    val_set = train_set[-40:]
+
+    # delete the last 10 samples from train
+    train_set = train_set[:-40]
+
+    val_reward_set = reward_set[-40:]
+    reward_set = reward_set[:-40]
+
+    
+    reward_dict = {}
+    for i in range(len(train_set)):
+        reward_dict[train_set[i]] = reward_set[i]
+    for i in range(len(val_set)):
+        reward_dict[val_set[i]] = val_reward_set[i]
+    
+
 
     trlx.train(
         config.model.model_path,
-        dataset=dataset,
+        prompts = train_set,
+        reward_fn = reward_fn,
+        eval_prompts=val_set,  # sampling 1000 validation prompts for evaluation speed in training
         config=config,
     )
 
