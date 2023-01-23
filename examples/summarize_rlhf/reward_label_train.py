@@ -60,20 +60,20 @@ def main(hparams={}):
     reward_set = [sample["reward"] for sample in data["train"]]
 
     # val_set is last 10 samples of train
-    val_set = train_set[-40:]
+    # val_set = train_set[-40:]
 
-    # delete the last 10 samples from train
-    train_set = train_set[:-40]
+    # # delete the last 10 samples from train
+    # train_set = train_set[:-40]
 
-    val_reward_set = reward_set[-40:]
-    reward_set = reward_set[:-40]
+    # val_reward_set = reward_set[-40:]
+    # reward_set = reward_set[:-40]
 
     
     reward_dict = {}
     for i in range(len(train_set)):
         reward_dict[train_set[i]] = reward_set[i]
-    for i in range(len(val_set)):
-        reward_dict[val_set[i]] = val_reward_set[i]
+    # for i in range(len(val_set)):
+    #     reward_dict[val_set[i]] = val_reward_set[i]
     
     import code; code.interact(local=dict(globals(), **locals()))
 
@@ -81,7 +81,7 @@ def main(hparams={}):
         config.model.model_path,
         prompts=train_set,
         reward_fn = reward_fn,
-        eval_prompts=val_set,  # sampling 1000 validation prompts for evaluation speed in training
+        # eval_prompts=val_set,  # sampling 1000 validation prompts for evaluation speed in training
         config=config,
     )
 
