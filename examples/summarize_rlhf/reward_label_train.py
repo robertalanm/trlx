@@ -46,6 +46,7 @@ def main(hparams={}):
 
     train_set = [(sample["response"], sample['reward']) for sample in dataset["train"]]
 
+    import code; code.interact(local=dict(globals(), **locals()))
 
     train_set, val_set = train_test_split(train_set, test_size=0.1, random_state=42)
 
