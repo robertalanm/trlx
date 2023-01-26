@@ -200,8 +200,8 @@ if __name__ == "__main__":
     # freeze_bottom_causal_layers(model, 0.5
     # import code; code.interact(local=dict(globals(), **locals()))
 
-    # layers = model.transformer.layers
-    layers = model.transformer.h
+    layers = model.transformer.layers
+    # layers = model.transformer.h
     num_layers = len(layers)
     num_unfrozen = int(0.3 * num_layers)
     for layer in layers[:-num_unfrozen]:
