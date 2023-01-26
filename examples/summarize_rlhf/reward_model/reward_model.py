@@ -81,6 +81,7 @@ class GPTRewardModel(nn.Module):
                 inference = True
                 continue
 
+
             # Check if there is any padding otherwise take length of sequence
             c_inds = (chosen[i] == self.PAD_ID).nonzero()
             c_ind = c_inds[0].item() if len(c_inds) > 0 else chosen.shape[1]
@@ -110,9 +111,9 @@ class GPTRewardModel(nn.Module):
         chosen_end_scores = torch.stack(chosen_end_scores)
         rejected_end_scores = torch.stack(rejected_end_scores)
 
-        # if inference:
-        #     chosen_end_scores = torch.stack(chosen_end_scores)
-        #     return {"chosen_end_scores": chosen_end_scores}
+        if inference:
+            # chosen_end_scores = torch.stack(chosen_end_scores)
+            return {"chosen_end_scores": chosen_end_scores}
 
         return {
             "loss": loss,
