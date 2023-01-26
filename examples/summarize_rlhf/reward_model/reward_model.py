@@ -106,13 +106,13 @@ class GPTRewardModel(nn.Module):
             ).mean()
             loss = loss / bs
 
-        if not inference:
-            chosen_end_scores = torch.stack(chosen_end_scores)
-            rejected_end_scores = torch.stack(rejected_end_scores)
+        # if not inference:
+        chosen_end_scores = torch.stack(chosen_end_scores)
+        rejected_end_scores = torch.stack(rejected_end_scores)
 
-        if inference:
-            chosen_end_scores = torch.stack(chosen_end_scores)
-            return {"chosen_end_scores": chosen_end_scores}
+        # if inference:
+        #     chosen_end_scores = torch.stack(chosen_end_scores)
+        #     return {"chosen_end_scores": chosen_end_scores}
 
         return {
             "loss": loss,
