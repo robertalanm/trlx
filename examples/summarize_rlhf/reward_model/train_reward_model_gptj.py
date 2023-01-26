@@ -166,7 +166,7 @@ def compute_metrics(eval_preds):
 
 
 if __name__ == "__main__":
-    tokenizer = AutoTokenizer.from_pretrained("EleutherAI/gpt-j-6B")
+    tokenizer = AutoTokenizer.from_pretrained("EleutherAI/pythia-2.8b")
     tokenizer.pad_token = tokenizer.eos_token
 
     if not os.path.exists("rm_checkpoint"):
@@ -194,7 +194,7 @@ if __name__ == "__main__":
     )
 
     # Initialize the reward model from the (supervised) fine-tuned GPT-J
-    model = GPTRewardModel("EleutherAI/gpt-j-6B")
+    model = GPTRewardModel("EleutherAI/pythia-2.8b")
 
     # Freeze the first 70% of the hidden layers of the reward model backbone
     # freeze_bottom_causal_layers(model, 0.5
