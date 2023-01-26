@@ -1,5 +1,5 @@
 {
-  "train_batch_size": 2,
+  "train_batch_size": "auto",
   "fp16": {
     "enabled": true,
     "min_loss_scale": 1,
@@ -8,10 +8,10 @@
   "zero_optimization": {
     "stage": 2,
     "offload_param": {
-      "device": "cpu"
+      "device": "none"
     },
     "offload_optimizer": {
-      "device": "cpu"
+      "device": "none"
     },
     "allgather_partitions": true,
     "allgather_bucket_size": 5e8,
