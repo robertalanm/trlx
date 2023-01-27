@@ -34,5 +34,5 @@ class Pytorch_to_Torchscript(torch.nn.Module):
 
 
 pt_model = Pytorch_to_Torchscript().eval()
-traced_script_module = torch.jit.trace(pt_model, (input_ids, mask))
+traced_script_module = torch.jit.trace(pt_model, (input_ids.cuda(), mask.cuda()))
 traced_script_module.save('model.pt')
