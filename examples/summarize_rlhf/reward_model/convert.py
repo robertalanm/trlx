@@ -26,7 +26,7 @@ class Pytorch_to_Torchscript(torch.nn.Module):
         super(Pytorch_to_Torchscript, self).__init__()
 
         # pre_model = AutoModelForCausalLM.from_pretrained('EleutherAI/pythia-6.9b')
-        self.model = GPTRewardModel('EleutherAI/pythia-6.9b', tokenizer.eos_token)
+        self.model = GPTRewardModel('EleutherAI/pythia-6.9b', tokenizer.eos_token).to('cuda')
         self.model.load_state_dict(torch.load(REWARD_CHECKPOINT_PATH))
     
     def forward(self, data, attention_mask=None):
@@ -34,5 +34,5 @@ class Pytorch_to_Torchscript(torch.nn.Module):
 
 
 pt_model = Pytorch_to_Torchscript().eval()
-traced_script_module = torch.jit.trace(pt_model, (input_ids.cuda(), mask.cuda()))
+traced_script_module = torch.jit.trace(pt_model, (input_ids, mask))
 traced_script_module.save('model.pt')
