@@ -6,7 +6,7 @@ tokenizer = AutoTokenizer.from_pretrained("EleutherAI/gpt-j-6B")
 
 premise = "The cat sat on the mat."
 
-input_ids = tokenizer.encode(premise, return_tensors="pt", max_length=256)
+input_ids = tokenizer.encode(premise, return_tensors="pt", max_length=256).to('cuda')
 
 mask = input_ids != 1
 mask.long()
