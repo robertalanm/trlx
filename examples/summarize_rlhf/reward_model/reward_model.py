@@ -8,7 +8,7 @@ from dataclasses import dataclass
 from typing import Optional, Tuple
 
 
-class RewardModel(nn.Module):
+class GPTRewardModel(nn.Module):
     def __init__(self, config, PAD_ID):
         super().__init__()
         # TODO(dahoas): fix hacky fix
