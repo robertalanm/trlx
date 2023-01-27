@@ -208,7 +208,7 @@ if __name__ == "__main__":
         layer.requires_grad_(False)
 
     # Create the comparisons datasets
-    data_path = "Dahoas/rm-hh-rlhf"
+    data_path = "Dahoas/rm-static"
     train_pairs = create_comparison_dataset(data_path, "train")
     # val_pairs = create_comparison_dataset(data_path, "test")
 

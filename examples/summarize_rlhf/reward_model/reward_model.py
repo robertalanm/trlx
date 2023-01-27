@@ -8,15 +8,12 @@ class GPTRewardModel(nn.Module):
         super().__init__()
         model = AutoModelForCausalLM.from_pretrained(model_path)
         self.config = model.config
-        self.neox = "neox" in self.config.model_type
-
         # `gpt-neo(x)` models use `hidden_size` attribute names instead of `n_embd``
         self.config.n_embd = (
             self.config.hidden_size
             if hasattr(self.config, "hidden_size")
             else self.config.n_embd
         )
-
         tokenizer_name = "EleutherAI/gpt-j-6B" if model_path == "robertmyers/bpt-sft" else model_path
         self.transformer = model.gpt_neox if hasattr(model, "gpt_neox") else model.transformer
         self.v_head = nn.Linear(self.config.n_embd, 1, bias=False)
@@ -41,12 +38,6 @@ class GPTRewardModel(nn.Module):
     ):
         loss = None
         transformer_outputs = self.transformer(
-            input_ids,
-            past_key_values=past_key_values,
-            attention_mask=attention_mask,
-            head_mask=head_mask,
-            inputs_embeds=inputs_embeds,
-        ) if self.neox else self.transformer(
             input_ids,
             past_key_values=past_key_values,
             attention_mask=attention_mask,
@@ -81,7 +72,6 @@ class GPTRewardModel(nn.Module):
                 inference = True
                 continue
 
-
             # Check if there is any padding otherwise take length of sequence
             c_inds = (chosen[i] == self.PAD_ID).nonzero()
             c_ind = c_inds[0].item() if len(c_inds) > 0 else chosen.shape[1]
@@ -105,7 +95,7 @@ class GPTRewardModel(nn.Module):
             loss += -torch.log(
                 torch.sigmoid(c_truncated_reward - r_truncated_reward)
             ).mean()
-            loss = loss / bs
+        loss = loss / bs
 
         if not inference:
             chosen_end_scores = torch.stack(chosen_end_scores)
