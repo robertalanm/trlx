@@ -17,7 +17,7 @@ if not os.path.exists(REWARD_CHECKPOINT_PATH):
     os.makedirs("rm_checkpoint", exist_ok=True)
     os.system(
         f"wget -O {REWARD_CHECKPOINT_PATH} \
-        https://huggingface.co/Dahoas/pythia-6b-rm-synthetic/resolve/main/hf_ckpt.pt"
+        https://huggingface.co/Dahoas/gptj-rm-static/resolve/main/hf_ckpt.pt"
     )
 
 
@@ -26,7 +26,7 @@ class Pytorch_to_Torchscript(torch.nn.Module):
         super(Pytorch_to_Torchscript, self).__init__()
 
         # pre_model = AutoModelForCausalLM.from_pretrained('EleutherAI/pythia-6.9b')
-        self.model = GPTRewardModel('EleutherAI/pythia-6.9b', tokenizer.eos_token).to('cuda')
+        self.model = GPTRewardModel('EleutherAI/gpt-j-6B', tokenizer.eos_token).to('cuda')
         self.model.load_state_dict(torch.load(REWARD_CHECKPOINT_PATH))
     
     def forward(self, data, attention_mask=None):
