@@ -8,6 +8,7 @@ class GPTRewardModel(nn.Module):
         super().__init__()
         model = AutoModelForCausalLM.from_pretrained(model_path)
         self.config = model.config
+        self.neox = "neox" in self.config.model_type
         # `gpt-neo(x)` models use `hidden_size` attribute names instead of `n_embd``
         self.config.n_embd = (
             self.config.hidden_size
