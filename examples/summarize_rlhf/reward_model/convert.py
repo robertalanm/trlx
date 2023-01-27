@@ -26,8 +26,8 @@ class Pytorch_to_Torchscript(torch.nn.Module):
         super(Pytorch_to_Torchscript, self).__init__()
 
         # pre_model = AutoModelForCausalLM.from_pretrained('EleutherAI/pythia-6.9b')
-        self.model = GPTRewardModel('EleutherAI/pythia-6.9b')
-        self.model.load_state_dict(torch.load(REWARD_CHECKPOINT_PATH), tokenizer.eos_token)
+        self.model = GPTRewardModel('EleutherAI/pythia-6.9b', tokenizer.eos_token)
+        self.model.load_state_dict(torch.load(REWARD_CHECKPOINT_PATH))
     
     def forward(self, data, attention_mask=None):
         return self.model(data.cuda(), attention_mask.cuda())
