@@ -1,5 +1,5 @@
 import torch
-from .reward_model import GPTRewardModel
+from reward_model import GPTRewardModel
 from transformers import AutoTokenizer
 
 tokenizer = AutoTokenizer.from_pretrained("EleutherAI/gpt-j-6B")
