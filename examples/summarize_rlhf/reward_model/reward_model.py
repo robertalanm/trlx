@@ -79,6 +79,7 @@ class GPTRewardModel(nn.Module):
                 inference = True
                 continue
 
+
             # Check if there is any padding otherwise take length of sequence
             c_inds = (chosen[i] == self.PAD_ID).nonzero()
             c_ind = c_inds[0].item() if len(c_inds) > 0 else chosen.shape[1]
