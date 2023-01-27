@@ -1,7 +1,7 @@
 import torch
-from    reward_model import GPTRewardModel
-from transformers import AutoTokenizer
-
+from reward_model import GPTRewardModel
+from transformers import AutoTokenizer, AutoModelForCausalLM
+import os
 tokenizer = AutoTokenizer.from_pretrained("EleutherAI/gpt-j-6B")
 
 premise = "The cat sat on the mat."
@@ -12,11 +12,22 @@ mask = input_ids != 1
 mask.long()
 
 
+REWARD_CHECKPOINT_PATH = "rm_checkpoint/hf_ckpt.pt"
+if not os.path.exists(REWARD_CHECKPOINT_PATH):
+    os.makedirs("rm_checkpoint", exist_ok=True)
+    os.system(
+        f"wget -O {REWARD_CHECKPOINT_PATH} \
+        https://huggingface.co/Dahoas/pythia-6b-rm-synthetic/resolve/main/hf_ckpt.pt"
+    )
+
 
 class Pytorch_to_Torchscript(torch.nn.Module):
     def __init__(self):
         super(Pytorch_to_Torchscript, self).__init__()
-        self.model = GPTRewardModel('Dahoas/gptj-rm-static')
+
+        # pre_model = AutoModelForCausalLM.from_pretrained('EleutherAI/pythia-6.9b')
+        self.model = GPTRewardModel('EleutherAI/pythia-6.9b')
+        self.model.load_state_dict(torch.load(REWARD_CHECKPOINT_PATH))
     
     def forward(self, data, attention_mask=None):
         return self.model(data.cuda(), attention_mask.cuda())
