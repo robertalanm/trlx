@@ -1,5 +1,5 @@
 import torch
-from reward_model import GPTRewardModel
+from    reward_model import GPTRewardModel
 from transformers import AutoTokenizer
 
 tokenizer = AutoTokenizer.from_pretrained("EleutherAI/gpt-j-6B")
@@ -20,3 +20,8 @@ class Pytorch_to_Torchscript(torch.nn.Module):
     
     def forward(self, data, attention_mask=None):
         return self.model(data.cuda(), attention_mask.cuda())
+
+
+pt_model = Pytorch_to_Torchscript().eval()
+traced_script_module = torch.jit.trace(pt_model, (input_ids, mask))
+traced_script_module.save('model.pt')
