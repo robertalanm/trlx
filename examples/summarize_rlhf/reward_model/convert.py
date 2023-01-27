@@ -21,18 +21,23 @@ if not os.path.exists(REWARD_CHECKPOINT_PATH):
     )
 
 
-class Pytorch_to_Torchscript(torch.nn.Module):
-    def __init__(self):
-        super(Pytorch_to_Torchscript, self).__init__()
+model = GPTRewardModel('EleutherAI/gpt-j-6B', tokenizer.eos_token).to('cuda')
+model.load_state_dict(torch.load(REWARD_CHECKPOINT_PATH))
 
-        # pre_model = AutoModelForCausalLM.from_pretrained('EleutherAI/pythia-6.9b')
-        self.model = GPTRewardModel('EleutherAI/gpt-j-6B', tokenizer.eos_token).to('cuda')
-        self.model.load_state_dict(torch.load(REWARD_CHECKPOINT_PATH))
+model.save_pretrained('gptj-rm-static')
+
+# class Pytorch_to_Torchscript(torch.nn.Module):
+#     def __init__(self):
+#         super(Pytorch_to_Torchscript, self).__init__()
+
+#         # pre_model = AutoModelForCausalLM.from_pretrained('EleutherAI/pythia-6.9b')
+#         self.model = GPTRewardModel('EleutherAI/gpt-j-6B', tokenizer.eos_token).to('cuda')
+#         self.model.load_state_dict(torch.load(REWARD_CHECKPOINT_PATH))
     
-    def forward(self, data, attention_mask=None):
-        return self.model(data.cuda(), attention_mask.cuda())
+#     def forward(self, data, attention_mask=None):
+#         return self.model(data.cuda(), attention_mask.cuda())
 
 
-pt_model = Pytorch_to_Torchscript().eval()
-traced_script_module = torch.jit.trace(pt_model, (input_ids, mask))
-traced_script_module.save('model.pt')
+# pt_model = Pytorch_to_Torchscript().eval()
+# traced_script_module = torch.jit.trace(pt_model, (input_ids, mask))
+# traced_script_module.save('model.pt')
