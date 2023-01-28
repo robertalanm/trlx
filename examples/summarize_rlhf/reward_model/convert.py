@@ -6,7 +6,7 @@ tokenizer = AutoTokenizer.from_pretrained("EleutherAI/gpt-j-6B")
 
 premise = "The cat sat on the mat."
 
-input_ids = tokenizer.encode(premise, return_tensors="pt", max_length=256).to('cuda')
+input_ids = tokenizer.encode(premise, return_tensors="pt", max_length=256)
 
 mask = input_ids != 1
 mask.long()
@@ -21,7 +21,7 @@ if not os.path.exists(REWARD_CHECKPOINT_PATH):
     )
 
 
-model = GPTRewardModel('EleutherAI/gpt-j-6B', tokenizer.eos_token).to('cuda')
+model = GPTRewardModel('EleutherAI/gpt-j-6B', tokenizer.eos_token)
 model.load_state_dict(torch.load(REWARD_CHECKPOINT_PATH))
 
 torch.save(model, 'pytorch_model.bin')
