@@ -24,6 +24,7 @@ class GPTRewardModel(nn.Module):
         self.PAD_ID = PAD_ID
 
 
+
     def gradient_checkpointing_enable(self):
         self.model.gradient_checkpointing_enable()
 

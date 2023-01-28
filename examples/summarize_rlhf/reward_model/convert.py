@@ -24,7 +24,12 @@ if not os.path.exists(REWARD_CHECKPOINT_PATH):
 model = GPTRewardModel('EleutherAI/gpt-j-6B', tokenizer.eos_token).to('cuda')
 model.load_state_dict(torch.load(REWARD_CHECKPOINT_PATH))
 
-model.save_pretrained('gptj-rm-static')
+torch.save(model, 'pytorch_model.bin')
+
+new_model = torch.load('./pytorch_model.bin')
+
+import code; code.interact()
+
 
 # class Pytorch_to_Torchscript(torch.nn.Module):
 #     def __init__(self):
