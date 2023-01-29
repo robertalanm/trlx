@@ -14,6 +14,9 @@ def prepare_tensor(name: str, input):
 
 
 reward_tokenizer = AutoTokenizer.from_pretrained("EleutherAI/gpt-j-6B")
+reward_tokenizer.pad_token = reward_tokenizer.eos_token
+reward_tokenizer.truncation_side = "left"
+
 
 triton_host = os.environ.get("TRITON_HOST", "localhost:8001")
 triton_model = os.environ.get("TRITON_MODEL", "gpt-j")
