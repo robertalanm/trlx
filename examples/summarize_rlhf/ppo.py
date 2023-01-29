@@ -28,7 +28,7 @@ def prepare_tensor(name: str, input):
 def main(hparams={}):
     config = TRLConfig.update(default_config, hparams)
 
-    reward_tokenizer = AutoTokenizer.from_pretrained("EleutherAO/gpt-j-6B")
+    reward_tokenizer = AutoTokenizer.from_pretrained("EleutherAI/gpt-j-6B")
     reward_tokenizer.pad_token = reward_tokenizer.eos_token
     reward_tokenizer.truncation_side = "left"
     client = client_util.InferenceServerClient(url=triton_host, verbose=False)
