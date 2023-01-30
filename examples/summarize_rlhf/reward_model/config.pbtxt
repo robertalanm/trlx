@@ -223,7 +223,7 @@ parameters {
 parameters {
   key: "model_checkpoint_path"
   value: {
-    string_value: "/workspace/models/j6b_ckpt/2-gpu"
+    string_value: "./models/1/2-gpu"
   }
 }
 parameters {
