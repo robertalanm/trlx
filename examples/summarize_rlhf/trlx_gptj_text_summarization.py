@@ -12,7 +12,7 @@ import re
 import trlx
 from trlx.data.configs import TRLConfig
 
-REWARD_CHECKPOINT_PATH = "reward_model/rm_checkpoint/pytorch_model.bin"
+REWARD_CHECKPOINT_PATH = "reward_model/rm_checkpoint/hf_ckpt.pt"
 # REWARD_CHECKPOINT_PATH = "reward_model/rm_checkpoint/checkpoint-500/pytorch_model.bin"
 # if not os.path.exists(REWARD_CHECKPOINT_PATH):
 #     os.makedirs("reward_model/rm_checkpoint", exist_ok=True)
