@@ -23,12 +23,17 @@ ds_config = {
         "overlap_events": True
     },
     "zero_optimization": {
-        "stage": 2,
+        "stage": 3,
         "offload_param": {
             "device": "cpu",
         },
         "overlap_comm": True,
-        "contiguous_gradients": True
+        "contiguous_gradients": True,
+        "reduce_bucket_size": model_hidden_size * model_hidden_size,
+        "stage3_prefetch_bucket_size": 0.1 * model_hidden_size * model_hidden_size,
+        "stage3_max_live_parameters": 1e8,
+        "stage3_max_reuse_distance": 1e8,
+        "stage3_param_persistence_threshold": 10 * model_hidden_size
     },
     "train_micro_batch_size_per_gpu": 1,
 }

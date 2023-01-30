@@ -50,7 +50,7 @@ class PPOOrchestrator(Orchestrator):
         """
         Batched scoring function taking text and generating scalar
         """
-        return self.trainer.reward_fn(samples)
+        return self.trainer.reward_fn(samples, device=self.trainer.accelerator.device)
 
     def make_experience(self, num_rollouts: int = 1024, iter_count: int = 0):  # noqa:
         """
@@ -101,6 +101,7 @@ class PPOOrchestrator(Orchestrator):
                     samples=str_samples,
                     prompts=str_prompts,
                     outputs=str_outputs,
+                    device=device,
                 ),
                 dtype=float,
             ).to(device)

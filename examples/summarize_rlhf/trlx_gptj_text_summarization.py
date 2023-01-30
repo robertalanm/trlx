@@ -26,9 +26,9 @@ SFT_MODEL_PATH = "robertmyers/bpt-sft"
 if __name__ == "__main__":
 
     # Load the pre-trained reward model
-    rw_tokenizer = AutoTokenizer.from_pretrained("EleutherAI/pythia-1.3b-deduped")
+    rw_tokenizer = AutoTokenizer.from_pretrained("EleutherAI/gpt-j-6B")
     rw_tokenizer.pad_token = rw_tokenizer.eos_token
-    rw_model = GPTRewardModel("EleutherAI/pythia-1.3b-deduped")
+    rw_model = GPTRewardModel("EleutherAI/gpt-j-6B")
     rw_model.load_state_dict(torch.load(REWARD_CHECKPOINT_PATH))
     rw_model.half()
     rw_model.eval()
@@ -37,10 +37,12 @@ if __name__ == "__main__":
     # (if you are running on a single gpu, this will be 0)
     rank = torch.distributed.get_rank() if torch.distributed.is_initialized() else 1
 
-    rw_device = torch.device("cuda:{}".format(rank))  # set reward model device
-    rw_model.to(rw_device)
+    for i in range(8):
+        rw_device = torch.device(f"cuda:{i}")
+        rw_model.to(rw_device)
+            
 
-    def get_scores(samples: List[str]):
+    def get_scores(samples: List[str], device=None):
         scores_list = []
         batch_size = 1
         # print('getting scores!')
@@ -56,8 +58,8 @@ if __name__ == "__main__":
                 padding="max_length",
                 return_tensors="pt",
             )
-            input_ids = encodings_dict["input_ids"].to(rw_device)
-            attn_masks = encodings_dict["attention_mask"].to(rw_device)
+            input_ids = encodings_dict["input_ids"].to(device)
+            attn_masks = encodings_dict["attention_mask"].to(device)
             input_ids = input_ids.repeat(2, 1)
             attn_masks = attn_masks.repeat(2, 1)
             with torch.no_grad():
@@ -95,13 +97,16 @@ if __name__ == "__main__":
         return formatted_prompts
 
     def reward_fn(samples: List[str], **kwargs):
+
+        device = kwargs.get("device", "cuda:0")
+
         try:
             original_samples = [text.split("Assistant:")[0] + "Assistant: " for text in samples]
             original_samples = [
                 text + post_summary_dict[text.strip()] for text in original_samples
             ]
-            original_scores = get_scores(original_samples)
-            scores = get_scores(samples)
+            original_scores = get_scores(original_samples, device=device)
+            scores = get_scores(samples, device=device)
             norms_scores = scores - original_scores
             # print('norms_scores', norms_scores)
             return norms_scores

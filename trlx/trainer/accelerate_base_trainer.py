@@ -341,6 +341,7 @@ class AccelerateRLTrainer(BaseRLTrainer):
                             samples=str_samples,
                             prompts=str_prompts,
                             outputs=str_outputs,
+                            device=self.accelerator.device,
                         ),
                         dtype=float,
                     )
@@ -431,9 +432,9 @@ class AccelerateRLTrainer(BaseRLTrainer):
                     with open(os.path.join(dir, "state.json")) as f:
                         state = json.load(f)
                         self.iter_count = state["iter_count"]
-        else:
-            results = self.evaluate()
-            self.accelerator.log(results, step=self.iter_count)
+        # else:
+            # results = self.evaluate()
+            # self.accelerator.log(results, step=self.iter_count)
 
         tbar = tqdm(
             initial=self.iter_count,
