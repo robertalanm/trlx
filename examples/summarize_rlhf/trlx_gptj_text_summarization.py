@@ -28,7 +28,7 @@ if __name__ == "__main__":
     # Load the pre-trained reward model
     rw_tokenizer = AutoTokenizer.from_pretrained("EleutherAI/gpt-j-6B")
     rw_tokenizer.pad_token = rw_tokenizer.eos_token
-    rw_model = GPTRewardModel("EleutherAI/gpt-j-6B")
+    rw_model = GPTRewardModel("EleutherAI/gpt-j-6B", rw_tokenizer.pad_token)
     rw_model.load_state_dict(torch.load(REWARD_CHECKPOINT_PATH))
     rw_model.half()
     rw_model.eval()
