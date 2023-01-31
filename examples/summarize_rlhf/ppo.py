@@ -150,7 +150,7 @@ def main(hparams={}):
             0:10
         ],
         config=config,
-        stop_sequences=["Human:", "human:", "Assistant:", "assistant:"],
+        stop_sequences=["Human:", "human:", "Assistant:", "assistant:", "Q:", "A:", "H:"],
     )
     trainer.save_pretrained(f"bpt-ppo-base")
 
