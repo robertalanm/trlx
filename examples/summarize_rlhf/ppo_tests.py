@@ -14,8 +14,8 @@ def generate(text):
 
     response = fp32_model.generate(input_ids, attention_mask=attention_mask, max_length=1024, do_sample=True, top_k=50, top_p=0.95, num_return_sequences=1)
 
-
-    return response
+    return tokenizer.decode(response[0], skip_special_tokens=True)
+    # return response
 
 # generate("Hello! How are you today?")
 
