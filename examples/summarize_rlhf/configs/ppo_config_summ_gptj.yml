@@ -2,10 +2,10 @@ train:
   seq_length: 1024
   epochs: 3
   total_steps: 256000
-  batch_size: 1
+  batch_size: 4
 
   checkpoint_interval: 32000
-  eval_interval: 16
+  eval_interval: 200
 
   pipeline: "PromptPipeline"
   orchestrator: "PPOOrchestrator"
@@ -14,7 +14,7 @@ train:
 
 model:
   model_path: "robertmyers/bpt-sft"
-  num_layers_unfrozen: 2
+  num_layers_unfrozen: 8
 
 tokenizer:
   tokenizer_path: "EleutherAI/gpt-j-6B"
