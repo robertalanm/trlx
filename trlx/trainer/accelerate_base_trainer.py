@@ -341,7 +341,6 @@ class AccelerateRLTrainer(BaseRLTrainer):
                             samples=str_samples,
                             prompts=str_prompts,
                             outputs=str_outputs,
-                            device=self.accelerator.device,
                         ),
                         dtype=float,
                     )
