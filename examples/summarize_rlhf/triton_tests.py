@@ -19,7 +19,7 @@ reward_tokenizer.truncation_side = "left"
 
 
 triton_host = os.environ.get("TRITON_HOST", "localhost:8001")
-triton_model = os.environ.get("TRITON_MODEL", "gpt-j")
+triton_model = os.environ.get("TRITON_MODEL", "gptj-rm-static")
 
 client = client_util.InferenceServerClient(url=triton_host, verbose=False)
 
