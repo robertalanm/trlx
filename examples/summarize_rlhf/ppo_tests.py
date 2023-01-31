@@ -9,7 +9,7 @@ pipe = pipeline(
     "text-generation",
     model=model,
     tokenizer=tokenizer,
-    device=0,
+    device=1,
 )
 
 def generate(text):
