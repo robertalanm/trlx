@@ -3,6 +3,7 @@ import os
 import re
 
 import numpy as np
+import torch
 import tritonclient.grpc as client_util
 import yaml
 from datasets import load_dataset
@@ -57,7 +58,7 @@ def main(hparams={}):
 
             last_ixs = attention_mask.sum(-1, keepdims=True) - 1
             returns = np.take_along_axis(rewards, last_ixs, -1)
-            out.extend(returns.flatten())
+            out.extend(torch.from_numpy(returns.flatten()))
 
         return out
 
