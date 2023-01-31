@@ -1,7 +1,18 @@
 from transformers import pipeline, AutoModelForCausalLM, AutoTokenizer
+from deepspeed.utils.zero_to_fp32 import load_state_dict_from_zero_checkpoint
+
+import os
+
+model_path = "./ckpts/"
+model_name = "EleutherAI/gpt-j-6B"
+model_ckpt = "model-5000"
 
 tokenizer = AutoTokenizer.from_pretrained("EleutherAI/gpt-j-6B")
-model = AutoModelForCausalLM.from_pretrained('./bpt-ppo-base')
+# model = AutoModelForCausalLM.from_pretrained('./bpt-ppo-base')
+model = AutoModelForCausalLM.from_pretrained(model_name)
+tokenizer = AutoTokenizer.from_pretrained('EleutherAI/gpt-j-6B')
+fp32_model = load_state_dict_from_zero_checkpoint(model, os.path.join(model_path))
+
 
 prompt = ""
 
@@ -22,6 +33,15 @@ def generate(text):
 
     return response
 
-generate("Hello! How are you today?")
+# generate("Hello! How are you today?")
 
-import code; code.interact(local=dict(globals(), **locals()))
+# build a chatbot cli
+
+def run_chatbot():
+    while True:
+        text = input("HUMAN> ")
+        response = generate(text)
+        print(f"SYBIL> {response}")
+
+if __name__ == "__main__":
+    run_chatbot()
