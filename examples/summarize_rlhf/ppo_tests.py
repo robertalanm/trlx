@@ -9,10 +9,9 @@ def generate(text):
     
     prompt = f"Human: {text}\nAssistant:"
 
-    input_ids, attention_mask = tokenizer.encode(prompt, return_tensors="pt")
-    input_ids = input_ids.to("cuda:1")
-    attention_mask = attention_mask.to("cuda:1")
-    
+    inputs = tokenizer(prompt, return_tensors="pt")
+    input_ids, attention_mask = inputs["input_ids"].to("cuda:1"), inputs["attention_mask"].to("cuda:1")
+
     response = fp32_model.generate(input_ids, attention_mask=attention_mask, max_length=1024, do_sample=True, top_k=50, top_p=0.95, num_return_sequences=1)
 
 
