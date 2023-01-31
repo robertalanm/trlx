@@ -5,7 +5,7 @@ import os
 
 
 
-def generate(text):
+def generate(text, prompt):
     
     prompt = prompt + f"Human: {text}\nAssistant:"
 
@@ -13,16 +13,16 @@ def generate(text):
 
     prompt = prompt + response + "\n"
 
-    return response
+    return response, prompt
 
 # generate("Hello! How are you today?")
 
 # build a chatbot cli
 
-def run_chatbot():
+def run_chatbot(prompt):
     while True:
         text = input("HUMAN> ")
-        response = generate(text)
+        response, prompt = generate(text, prompt)
         print(f"SYBIL> {response}")
 
 if __name__ == "__main__":
@@ -45,4 +45,4 @@ if __name__ == "__main__":
         tokenizer=tokenizer,
         device=1,
     )
-    run_chatbot()
+    run_chatbot(prompt)
