@@ -34,5 +34,4 @@ inputs = [
 
 result = client.infer(triton_model, inputs)
 rewards = result.as_numpy("rewards")
-print(result)
-
+import code; code.interact(local=dict(globals(), **locals()))
