@@ -23,7 +23,7 @@ triton_model = os.environ.get("TRITON_MODEL", "gptj-rm-static")
 
 client = client_util.InferenceServerClient(url=triton_host, verbose=False)
 
-input = reward_tokenizer("Assistant: Hello! How are you today", padding=True, max_length=1024, return_tensors="pt")
+input = reward_tokenizer("Assistant: Hello! How are you today", padding=True, max_length=1024, return_tensors="np")
 # input_ids = np.array(input.input_ids, dtype=np.int32)
 # attention_mask = np.array(input.attention_mask, dtype=np.int8)
 
