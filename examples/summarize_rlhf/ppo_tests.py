@@ -9,7 +9,18 @@ def generate(text):
     
     prompt = f"Human: {text}\nAssistant:"
 
-    response = pipe(prompt, max_length=1024, min_length=32, do_sample=True, top_k=512, top_p=0.92, num_return_sequences=1,)[0]['generated_text']
+    response = pipe(
+            prompt, 
+            max_length=1024, 
+            min_length=4, 
+            do_sample=True, 
+            top_k=512, 
+            top_p=0.97, 
+            beam_size=1, 
+            early_stopping=True, 
+            no_repeat_ngram_size=3, 
+            num_return_sequences=1
+        )[0]["generated_text"]
 
 
     return response
