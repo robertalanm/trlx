@@ -16,7 +16,7 @@ from trlx.data.configs import TRLConfig
 config_path = os.path.join(os.path.dirname(__file__), os.environ.get("CONFIG_PATH", "configs/ppo_config_summ_gptj.yml"))
 default_config = yaml.safe_load(open(config_path))
 triton_host = os.environ.get("TRITON_HOST", "localhost:8001")
-triton_model = os.environ.get("TRITON_MODEL", "gpt-j")
+triton_model = os.environ.get("TRITON_MODEL", "gptj-rm-static")
 
 
 def prepare_tensor(name: str, input):
