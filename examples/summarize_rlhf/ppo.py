@@ -35,7 +35,7 @@ def main(hparams={}):
 
     def reward_fn(samples, prompts, outputs):
         samples = [s + reward_tokenizer.eos_token for s in samples]
-        input = reward_tokenizer(samples, padding=True, max_length=1024)
+        input = reward_tokenizer(samples, padding=True, max_length=1024, return_tensors="np")
 
         mbs = 24
         out = []
