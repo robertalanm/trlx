@@ -105,11 +105,11 @@ def main(hparams={}):
         return formatted_prompts
 
 
-    dataset = load_dataset("Dahoas/rm-static")
+    # dataset = load_dataset("Dahoas/rm-static")
     # prompts = dataset["train"]["prompt"]
     # eval_prompts = dataset["test"]["prompt"][:8]
 
-    # dataset = load_dataset("Dahoas/rm-synthetic-hh")
+    dataset = load_dataset("Dahoas/rm-synthetic-hh")
 
     # Store data into prompt and label pairs
     train_set = [(sample["prompt"], sample["response"]) for sample in dataset['train']]
