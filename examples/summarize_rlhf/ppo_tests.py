@@ -9,18 +9,11 @@ def generate(text):
     
     prompt = f"Human: {text}\nAssistant:"
 
-    response = pipe(
-            prompt, 
-            max_length=1024, 
-            min_length=4, 
-            do_sample=False, 
-            top_k=512, 
-            top_p=0.97, 
-            num_beams=2, 
-            early_stopping=True, 
-            no_repeat_ngram_size=3, 
-            num_return_sequences=1
-        )[0]["generated_text"]
+    input_ids, attention_mask = tokenizer.encode(prompt, return_tensors="pt")
+    input_ids = input_ids.to("cuda:1")
+    attention_mask = attention_mask.to("cuda:1")
+    
+    response = fp32_model.generate(input_ids, attention_mask=attention_mask, max_length=1024, do_sample=True, top_k=50, top_p=0.95, num_return_sequences=1)
 
 
     return response
@@ -45,12 +38,6 @@ if __name__ == "__main__":
     model = AutoModelForCausalLM.from_pretrained(model_name)
     tokenizer = AutoTokenizer.from_pretrained('EleutherAI/gpt-j-6B')
     fp32_model = load_state_dict_from_zero_checkpoint(model, os.path.join(model_path))
+    fp32_model.to("cuda:1")
 
-
-    pipe = pipeline(
-        "text-generation",
-        model=model,
-        tokenizer=tokenizer,
-        device=1,
-    )
     run_chatbot()
