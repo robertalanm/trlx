@@ -13,10 +13,10 @@ def generate(text):
             prompt, 
             max_length=1024, 
             min_length=4, 
-            do_sample=True, 
+            do_sample=False, 
             top_k=512, 
             top_p=0.97, 
-            beam_size=1, 
+            num_beams=2, 
             early_stopping=True, 
             no_repeat_ngram_size=3, 
             num_return_sequences=1
