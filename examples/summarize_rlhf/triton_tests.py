@@ -28,8 +28,8 @@ input_ids = np.array(input.input_ids, dtype=np.int32)
 attention_mask = np.array(input.attention_mask, dtype=np.int8).reshape(-1,-1)
 
 inputs = [
-    prepare_tensor("input_ids", input_ids),
-    prepare_tensor("attention_mask", attention_mask),
+    prepare_tensor("input_ids", input.input_ids),
+    prepare_tensor("attention_mask", input.attention_mask),
 ]
 
 result = client.infer(triton_model, inputs)
