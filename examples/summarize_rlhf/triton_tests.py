@@ -25,7 +25,7 @@ client = client_util.InferenceServerClient(url=triton_host, verbose=False)
 
 input = reward_tokenizer("Assistant: Hello! How are you today", padding=True, max_length=1024)
 input_ids = np.array(input.input_ids, dtype=np.int32)
-attention_mask = np.array(input.attention_mask, dtype=np.int8)
+attention_mask = np.array(input.attention_mask, dtype=np.int8).reshape(-1,-1)
 
 inputs = [
     prepare_tensor("input_ids", input_ids),
