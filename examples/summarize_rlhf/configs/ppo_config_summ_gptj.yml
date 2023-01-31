@@ -1,8 +1,9 @@
 train:
   seq_length: 2048
-  epochs: 10000
+  # epochs: 10000
+  epochs: 4
   total_steps: 6000
-  batch_size: 4
+  batch_size: 6
 
   checkpoint_interval: 32000
   eval_interval: 500
@@ -53,6 +54,6 @@ method:
   cliprange_reward: 20
   gen_kwargs:
     max_new_tokens: 96
-    top_k: 0
-    top_p: 1.0
+    top_k: 512
+    top_p: 0.97
     do_sample: True
