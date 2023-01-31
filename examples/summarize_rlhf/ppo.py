@@ -51,6 +51,7 @@ def main(hparams={}):
 
             result = client.infer(triton_model, inputs)
             rewards = result.as_numpy("rewards")
+            print(rewards)
             if rewards is None:
                 raise RuntimeError("No output data")
 
