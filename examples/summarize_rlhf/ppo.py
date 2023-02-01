@@ -115,7 +115,7 @@ def main(hparams={}):
     # dataset = load_dataset("Dahoas/rm-synthetic-hh")
 
     # Store data into prompt and label pairs
-    dataset = load_dataset("Dahoas/rm-static")
+    dataset = load_dataset("robertmyers/bpt-static")
     train_set = [(sample["prompt"], sample["chosen"]) for sample in dataset['train']]
 
 
