@@ -12,7 +12,7 @@ def generate(text):
     inputs = tokenizer(text, return_tensors="pt")
     input_ids, attention_mask = inputs["input_ids"].to("cuda:1"), inputs["attention_mask"].to("cuda:1")
 
-    response = fp32_model.generate(input_ids, attention_mask=attention_mask, max_length=1024, do_sample=False, top_k=0, top_p=1, num_return_sequences=1, early_stopping=True)
+    response = fp32_model.generate(input_ids, attention_mask=attention_mask, max_new_tokens=144, do_sample=False, top_k=512, top_p=0.92, num_return_sequences=1, early_stopping=True)
 
     # replace the prompt from the response
     response = response[0].tolist()
