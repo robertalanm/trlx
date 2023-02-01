@@ -42,6 +42,7 @@ if __name__ == "__main__":
     model = AutoModelForCausalLM.from_pretrained(model_name)
     tokenizer = AutoTokenizer.from_pretrained('EleutherAI/gpt-j-6B')
     fp32_model = load_state_dict_from_zero_checkpoint(model, os.path.join(model_path))
+    fp32_model.save_pretrained('bpt-ppo-base')
     fp32_model.to("cuda:1")
 
     run_chatbot()
