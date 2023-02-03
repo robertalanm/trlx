@@ -14,7 +14,7 @@ train:
   save_best: False
 
 model:
-  model_path: "robertmyers/bpt-sft"
+  model_path: "Rallio67/chip_7B_instruct_alpha"
   num_layers_unfrozen: 4
 
 tokenizer:
