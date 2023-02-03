@@ -125,7 +125,7 @@ def main(hparams={}):
 
     # Store data into prompt and label pairs
     dataset = load_dataset("robertmyers/bpt-static")
-    train_set = [(sample["prompt"], sample["chosen"]) for sample in dataset['train']]
+    train_set = [(sample["prompt"], sample["response"]) for sample in dataset['train']]
 
 
     # train_set = [(sample["prompt"], sample["response"]) for sample in dataset]

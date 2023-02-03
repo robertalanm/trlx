@@ -54,6 +54,9 @@ method:
   cliprange_reward: 20
   gen_kwargs:
     max_new_tokens: 144
-    top_k: 512
-    top_p: 0.92
+    top_k: 4
+    top_p: 0.95
     do_sample: True
+    temperature: 0.5
+    penalty_alpha: 0.6
+    repetition_penalty: 1.03
