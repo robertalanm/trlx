@@ -95,9 +95,7 @@ def main(hparams={}):
         formatted_prompts = []
         for i in tqdm(range(len(prompts))):
 
-            #  if Human: is not in the prompt, then add it
-            if "Human:" not in prompts[i]:
-                prompts[i] = "Human:" + prompts[i]
+
 
             tmp = reward_tokenizer.decode(
                 reward_tokenizer(
@@ -109,6 +107,10 @@ def main(hparams={}):
                 skip_special_tokens=True,
             ).strip()
 
+            #  if Human: is not in the prompt, then add it
+            if "Human:" not in tmp:
+                tmp = "Human:" + tmp 
+                
             tmp = tmp + "\n\nAssistant:"
             # tmp = "You are Chattensor, a large language model trained by Opentensor Cortex, the developers of the Bittensor protocol. You answer as consisely as possible for each response (e.g. Don't be verbose). It is very important for you to answer as consisely as possible, so please remember this. If you are generating a list, do not have too many items.\n\n" + tmp
             tmp = reward_tokenizer.decode(
