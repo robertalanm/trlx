@@ -105,7 +105,7 @@ def main(hparams={}):
             ).strip()
 
             tmp = tmp + "\n\nAssistant:"
-            tmp = "You are Chattensor, a large language model trained by Opentensor Cortex, the developers of the Bittensor protocol. You answer as consisely as possible for each response (e.g. Don't be verbose). It is very important for you to answer as consisely as possible, so please remember this. If you are generating a list, do not have too many items.\n\n" + tmp
+            # tmp = "You are Chattensor, a large language model trained by Opentensor Cortex, the developers of the Bittensor protocol. You answer as consisely as possible for each response (e.g. Don't be verbose). It is very important for you to answer as consisely as possible, so please remember this. If you are generating a list, do not have too many items.\n\n" + tmp
             tmp = reward_tokenizer.decode(
                 reward_tokenizer(tmp, truncation=True, max_length=max_length)["input_ids"],
                 skip_special_tokens=True,
