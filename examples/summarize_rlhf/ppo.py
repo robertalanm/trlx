@@ -70,14 +70,14 @@ def main(hparams={}):
 
             result = client.infer(triton_model, inputs)
             rewards = result.as_numpy("rewards")
-            print(rewards)
+            # print(rewards)
             if rewards is None:
                 raise RuntimeError("No output data")
 
             last_ixs = attention_mask.sum(-1, keepdims=True) - 1
             returns = np.take_along_axis(rewards, last_ixs, -1)
             out.extend(torch.from_numpy(returns.flatten()))
-        print('out', out)
+        # print('out', out)
         return out
 
     def get_prompt_dataset(prompts, max_length):
