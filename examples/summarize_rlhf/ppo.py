@@ -161,7 +161,6 @@ def main(hparams={}):
         config=config,
         stop_sequences=["Human:", "human:", "Assistant:", "assistant:", "Q:", "A:", "H:"],
     )
-    trainer.save_pretrained(f"bpt-ppo-base")
 
 
 if __name__ == "__main__":
