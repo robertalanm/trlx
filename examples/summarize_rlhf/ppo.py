@@ -94,12 +94,17 @@ def main(hparams={}):
         """
         formatted_prompts = []
         for i in tqdm(range(len(prompts))):
+
+            #  if Human: is not in the prompt, then add it
+            if "Human:" not in prompts[i]:
+                prompts[i] = "Human:" + prompts[i]
+
             tmp = reward_tokenizer.decode(
                 reward_tokenizer(
                     prompts[i].split("Assistant:")[0],
                     truncation=True,
                     max_length=max_length
-                    - 11,  # to make sure "TL;DR" dont get truncated
+                      # to make sure "TL;DR" dont get truncated
                 )["input_ids"],
                 skip_special_tokens=True,
             ).strip()
